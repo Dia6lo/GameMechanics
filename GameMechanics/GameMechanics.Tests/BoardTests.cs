@@ -25,8 +25,8 @@ namespace GameMechanics.Tests
 			var board = new Board(Width, Height);
 			Func<IItem> factory1 = () => new Item1();
 			Func<IItem> factory2 = () => new Item2();
-			board.Fill(factory1, factory2);
-			board.ForEachCell((Cell c) => Assert.That(c.Item, Is.TypeOf<Item1>().Or.TypeOf<Item2>()));
+			board.FillInstantly(factory1, factory2);
+			board.ForEachCell(c => Assert.That(c.Item, Is.TypeOf<Item1>().Or.TypeOf<Item2>()));
 		}
 
 		[Test]
@@ -36,7 +36,7 @@ namespace GameMechanics.Tests
 			Assert.Throws<ArgumentException>(() => board.Fill());
 		}
 
-		private class Item1: IItem { }
-		private class Item2 : IItem { }
+		private class Item1: CommonItem { }
+		private class Item2 : CommonItem { }
 	}
 }

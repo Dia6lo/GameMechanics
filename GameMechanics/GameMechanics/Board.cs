@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace GameMechanics
 {
@@ -9,6 +10,7 @@ namespace GameMechanics
 		private readonly Cell[,] cells;
 		public int Height { get; }
 		public int Width { get; }
+		public Action<IItem, IntVector2> OnStartMoving { get; set; } 
 
 		public Board(int width, int height)
 		{
@@ -18,12 +20,30 @@ namespace GameMechanics
 			ForEachCell((x, y) => cells[x, y] = new Cell());
 		}
 
-		public void Fill(params Func<IItem>[] factories)
+		public void FillInstantly(params Func<IItem>[] factories)
 		{
 			if (!factories.Any()) {
 				throw new ArgumentException("factories");
 			}
 			ForEachCell(cell => cell.Item = factories.Random().Invoke());
+		}
+
+		public void Fill(params Func<IItem>[] factories)
+		{
+			if (!factories.Any()) {
+				throw new ArgumentException("factories");
+			}
+			ForEachCell(pos => {
+				var item = factories.Random().Invoke();
+				item.Target = this[pos];
+				item.State = ItemState.Moving;
+				OnStartMoving(item, pos);
+			});
+		}
+
+		public Cell this[IntVector2 position]
+		{
+			get { return cells[position.X, position.Y]; }
 		}
 
 		public void ForEachCell(Action<Cell> action)

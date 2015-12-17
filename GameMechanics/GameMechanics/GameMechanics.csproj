@@ -40,8 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonItem.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="ItemPrototype.cs" />
+    <Compile Include="ItemFactory.cs" />
+    <Compile Include="ItemState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="Cell.cs" />
